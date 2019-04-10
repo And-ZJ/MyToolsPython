@@ -116,13 +116,15 @@ class RunTime:
                 ut = et - st
                 name = key
                 """
-                此处不能赋值给 key，否则会报 key 不存在，非常奇怪。
+                此处不能赋值给 key，否则会报 key 不存在。
                 例如这种用法：
                 key = key
                 或者这种：
                 name = key
                 key = name
-                都是错的
+                都是错的.
+                错误原因，python的闭包原则。
+                参考链接：https://www.cnblogs.com/JohnABC/p/4076855.html
                 """
                 if name is None:
                     if moduleName or function.__module__ != '__main__':
@@ -141,7 +143,11 @@ class RunTime:
     @staticmethod
     def list():
         print('RunTime list: {0} records.'.format(len(RunTime.RECORD)))
-        for key,value in RunTime.RECORD.items():
+        # 按字母顺序打印
+        sortedKey = sorted(list(RunTime.RECORD.keys()))
+        for key in sortedKey:
+            value = RunTime.RECORD[key]
+        # for key,value in RunTime.RECORD.items():
             print("'{0}()' -> {1:0.3f} secs".format(key,value))
 
 RunTime.init()
